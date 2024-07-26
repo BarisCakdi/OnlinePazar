@@ -1,0 +1,42 @@
+﻿@model List<Product>
+@using System.Globalization
+
+<div class="alert @ViewBag.MessageCssClass" role="alert">
+    @ViewBag.Message
+</div>
+
+<section class="py-5">
+    <div class="container px-4 text-center">
+        <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+            @foreach (var product in Model)
+            {
+                <div class="col mb-5">
+                    <div class="card h-100 d-flex flex-column">
+                        <form method="post" asp-action="Sepet" asp-controller="Home">
+                            <!-- Ürün resmi-->
+                            <img class="card-img-top" height="200px" src="/uploads/@product.ImagePath" alt="@product.Name" />
+                            <!-- Ürün detayları-->
+                            <div class="card-body d-flex flex-column">
+                                <div class="text-center">
+                                    <!-- Ürün ismi-->
+                                    <h5 class="fw-bolder">@product.Name</h5>
+                                    <!-- Ürün fiyatı-->
+                                    <div>
+                                        Kg: @product.Price.ToString("c", CultureInfo.CreateSpecificCulture("tr-TR"))
+                                        <br />
+                                        (Stok: @product.Stock)
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Ürün aksiyonları ve adet seçimi -->
+                            <div class="card-footer d-flex flex-column align-items-center mt-auto">
+                                <input type="hidden" name="Id" value="@product.Id" />
+                                <button type="submit" class="btn btn-outline-dark">Sepete Ekle</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>

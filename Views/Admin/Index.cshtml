@@ -1,0 +1,86 @@
+﻿@model List<Product>
+@{
+    Layout = "_AdminLayout";
+}
+<section class="py-5">
+    <div class="container px-4 px-lg-5 mt-5">
+        <div class="row">
+            <!-- Ürün ekleme formu -->
+            <div class="col-lg-4 mb-5">
+                <h4>Yeni Ürün Ekle</h4>
+                <form class="row g-3" method="post" action="/admin/add" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label class="form-label">Ürün adı</label>
+                        <input required type="text" class="form-control" name="Name">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Fiyat</label>
+                        <input required type="number" class="form-control" name="Price">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Stok</label>
+                        <input required type="number" class="form-control" name="Stock">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Fotoğraf</label>
+                        <input required type="file" class="form-control" name="Image">
+                    </div>
+                    <button class="btn btn-success">Ekle</button>
+                </form>
+            </div>
+            <!-- Mevcut ürünlerin düzenleme ve kontrolü -->
+            <div class="col-lg-8 mb-5">
+                <h4>Mevcut Ürünler</h4>
+                <!-- Mevcut ürünler tablosu -->
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Ürün Adı</th>
+                                <th scope="col">Fiyat</th>
+                                <th scope="col">Stok</th>
+                                <th scope="col">Fotoğraf</th>
+                                <th scope="col">İşlemler</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var post in Model)
+                            {
+                                <tr>
+                                    <form method="post" action="/admin/edit/@post.Id" enctype="multipart/form-data">
+                                    <th scope="row">@post.Id</th>
+                                    <td>
+                                        <input type="hidden" name="Id" value="@post.Id" />
+                                        <input type="text" name="Name" value="@post.Name" class="form-control" />
+                                    </td>
+                                    <td>
+                                        <input type="hidden" name="Name" value="@post.Name" />
+                                        <input type="number" name="Price" value="@post.Price" class="form-control" />
+                                    </td>
+                                    <td>
+                                        <input type="hidden" name="Name" value="@post.Name" />
+                                        <input type="number" name="Stock" value="@post.Stock" class="form-control" />
+                                    </td>
+                                    <td>
+                                        <input type="hidden" name="ExistingImagePath" value="@post.ImagePath" />
+                                        <input type="file" name="Image" class="form-control" />
+                                    </td>
+                                    <td>
+                                        <button type="submit" class="btn btn-primary btn-sm">Düzenle</button>
+                                    </td>
+                                    </form>
+                                    <td>
+                                        <form method="post" action="/admin/delete/@post.Id">
+                                            <button type="submit" onclick="return confirm('Emin misin?')" class="btn btn-danger btn-sm">Sil</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

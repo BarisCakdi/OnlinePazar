@@ -1,0 +1,49 @@
+﻿@model List<Sepet>
+@using System.Globalization
+@if (ViewBag.Message != null)
+{
+    <div class="alert alert-warning">@ViewBag.Message</div>
+}
+@if (Model.Any())
+{
+<section class="py-5">
+    <div class="container px-4 text-center">
+        <h2>Sepet</h2>
+            <table class="table">
+            <thead>
+                <tr>
+                    <th>Ürün Adı</th>
+                    <th>Ürün Fiyatı</th>
+                    <th>Adet</th>
+                    <th>Toplam</th>
+                    <th>İşlemler</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.UrunAdi</td>
+                        <td>@item.UrunFiyat.ToString("c", CultureInfo.CreateSpecificCulture("tr-TR"))</td>
+                        <td>@item.UrunAdet</td>
+                        <td>@((item.UrunFiyat * item.UrunAdet).ToString("c", CultureInfo.CreateSpecificCulture("tr-TR")))</td>
+                        <td>
+                            <form method="post" asp-action="SepetSil" asp-controller="Home">
+                                <input type="hidden" name="Id" value="@item.Id" />
+                                <button type="submit" class="btn btn-danger">Çıkart</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <div class="mt-3">
+            <h4>Toplam: @(Model.Sum(item => item.UrunFiyat * item.UrunAdet).ToString("c", CultureInfo.CreateSpecificCulture("tr-TR")))</h4>
+        </div>
+        <div class="mt-3">
+            <a href="/home/odeme" class="btn btn-success">Ödeme Yap</a>
+        </div>
+    </div>
+    </section>
+}
+

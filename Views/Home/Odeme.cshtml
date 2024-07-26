@@ -1,0 +1,67 @@
+﻿@model List<Sepet>
+@using System.Globalization
+
+<div class="alert @ViewBag.MessageCssClass" role="alert">
+    @ViewBag.Message
+</div>
+
+<section class="py-5">
+    <div class="container px-4 text-center">
+        <h2>Ödeme</h2>
+        <div class="row justify-content-center">
+            <div class="col-lg-6">
+                <form method="post" asp-action="Odeme" asp-controller="Home">
+                    <div class="mb-3">
+                        <h5>Toplam:</h5>
+                        <p>
+                            @Model.Sum(item => item.UrunFiyat * item.UrunAdet).ToString("c", CultureInfo.CreateSpecificCulture("tr-TR"))
+                        </p>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Ödeme Yöntemi</label>
+                        <div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="OdemeYontemi" id="krediKarti" value="Kredi Kartı" checked>
+                                <label class="form-check-label" for="krediKarti">
+                                    Kredi Kartı
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="OdemeYontemi" id="nakit" value="Nakit">
+                                <label class="form-check-label" for="nakit">
+                                    Nakit
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="krediKartiBilgileri" class="mb-3">
+                        <label class="form-label">Kart Bilgileri</label>
+                        <input type="text" class="form-control mb-2" placeholder="Kart Numarası">
+                        <input type="date" class="form-control mb-2" placeholder="Son Kullanma Tarihi">
+                        <input type="number" maxlength="3" class="form-control" placeholder="CVV">
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Ödeme Yap</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const krediKarti = document.getElementById('krediKarti');
+        const nakit = document.getElementById('nakit');
+        const krediKartiBilgileri = document.getElementById('krediKartiBilgileri');
+
+        krediKarti.addEventListener('change', function () {
+            krediKartiBilgileri.style.display = 'block';
+        });
+
+        nakit.addEventListener('change', function () {
+            krediKartiBilgileri.style.display = 'none';
+        });
+    });
+</script>
